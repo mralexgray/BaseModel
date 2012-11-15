@@ -63,7 +63,6 @@
 NSString *const BaseModelSharedInstanceUpdatedNotification = @"BaseModelSharedInstanceUpdatedNotification";
 @implementation BaseModel
 
-#pragma mark -
 #pragma mark Private utility methods
 
 + (NSString *)resourceFilePath:(NSString *)path
@@ -116,7 +115,6 @@ NSString *const BaseModelSharedInstanceUpdatedNotification = @"BaseModelSharedIn
     return [self saveFilePath:[self saveFile]];
 }
 
-#pragma mark -
 #pragma mark Singleton behaviour
 
 static NSMutableDictionary *sharedInstances = nil;
@@ -212,7 +210,6 @@ static NSMutableDictionary *sharedInstances = nil;
     }
 }
 
-#pragma mark -
 #pragma mark Default constructors
 
 - (void)setUp
@@ -471,7 +468,6 @@ static BOOL loadingFromResourceFile = NO;
 }
 */
 
-#pragma mark -
 #pragma mark Unique identifier generation
 
 + (NSString *)newUniqueIdentifier
