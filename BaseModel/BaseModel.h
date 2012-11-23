@@ -80,8 +80,8 @@ extern NSString *const BaseModelSharedInstanceUpdatedNotification;
 - (instancetype)initWithCoder:(NSCoder *)decoder;
 
 //loading and saving the model from a plist file
-//+ (instancetype)instanceWithContentsOfFile:(NSString *)path;
-//- (instancetype)initWithContentsOfFile:(NSString *)path;
++ (instancetype)instanceWithContentsOfFile:(NSString *)path;
+- (instancetype)initWithContentsOfFile:(NSString *)path;
 - (void)writeToFile:(NSString *)path atomically:(BOOL)atomically;
 - (BOOL)useHRCoderIfAvailable;
 
@@ -93,6 +93,8 @@ extern NSString *const BaseModelSharedInstanceUpdatedNotification;
 //is used to save any instance of the model
 + (NSString *)resourceFile;
 + (NSString *)saveFile;
+
+- (BOOL) convertToXML;
 
 //save the model
 - (void)save;

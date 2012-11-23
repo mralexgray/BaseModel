@@ -193,7 +193,10 @@ static NSMutableDictionary *sharedInstances = nil;
 
 - (BOOL)useHRCoderIfAvailable
 {
-    return YES;
+    return NO;
+}
+
+- (BOOL) convertToXML {  return YES;
 }
 
 - (void)save
@@ -333,9 +336,171 @@ static BOOL loadingFromResourceFile = NO;
 
 + (instancetype)instanceWithContentsOfFile:(NSString *)filePath
 {
+    //check if the path is a full path or not
+    NSString *path = filePath;
+    if (![path isAbsolutePath])
+    {
+        //try resources
+        path = [self resourceFilePath:filePath];
+        if (![[NSFileManager defaultManager] fileExistsAtPath:path])
+        {
+            //try application support
+            path = [self saveFilePath:filePath];
+        }
+    }
+
+    return [[[self alloc] initWithContentsOfFile:path] autorelease];
+}
+
+- (instancetype)initWithContentsOfFile:(NSString *)filePath
+{
+    id object = nil;
+    NSData *data = nil;
+
+    static NSCache *cachedResourceFiles = nil;
+    if (cachedResourceFiles == nil)
+    {
+        cachedResourceFiles = [[NSCache alloc] init];
+    }
+
+    //check cache for existing instance
+    //only cache files inside the main bundle as they are immutable
+    BOOL isResourceFile = [filePath hasPrefix:[[NSBundle mainBundle] bundlePath]];
+    if (isResourceFile)
+    {
+        object = [cachedResourceFiles objectForKey:filePath];
+        if (object == [NSNull null])
+        {
+            object = nil;
+        }
+        else if ([object isKindOfClass:[NSData class]])
+        {
+            data = object;
+            object = nil;
+        }
+    }
+
+    //load object if no cached version found
+    if (!object)
+    {
+        if (!data)
+        {
+            //load the file
+            data = [NSData dataWithContentsOfFile:filePath];
+        }
+
+        //attempt to deserialise data as a plist
+        if (data)
+        {
+            NSPropertyListFormat format;
+            NSPropertyListReadOptions options = NSPropertyListMutableContainersAndLeaves;
+            if (!(object = [NSPropertyListSerialization propertyListWithData:data options:options format:&format error:NULL]))
+            {
+                //data is not a plist
+                object = data;
+            }
+        }
+    }
+
+    //success?
+    if (object)
+    {
+        //check if object is an NSCoded archive
+        if ([object respondsToSelector:@selector(objectForKey:)])
+        {
+            if ([object objectForKey:@"$archiver"])
+            {
+                if (isResourceFile)
+                {
+                    //cache data for next time
+                    [cachedResourceFiles setObject:data forKey:filePath];
+                }
+
+                //unarchive object
+                Class coderClass = NSClassFromString(@"CryptoCoder");
+                if (!coderClass)
+                {
+                    coderClass = [NSKeyedUnarchiver class];
+                }
+                object = [coderClass unarchiveObjectWithData:data];
+            }
+            else
+            {
+                if (isResourceFile)
+                {
+                    //cache object for next time
+                    [cachedResourceFiles setObject:object forKey:filePath];
+                }
+
+                //unarchive object
+                Class HRCoderClass = NSClassFromString(@"HRCoder");
+                NSString *classNameKey = [HRCoderClass valueForKey:@"classNameKey"];
+                if ([object objectForKey:classNameKey])
+                {
+                    object = objc_msgSend(HRCoderClass, @selector(unarchiveObjectWithPlist:), object);
+                }
+            }
+
+            if ([object isKindOfClass:[self class]])
+            {
+                //return object
+                [self release];
+                return ((self = [object ah_retain]));
+            }
+        }
+        else if (isResourceFile)
+        {
+            //cache object for next time
+            [cachedResourceFiles setObject:object forKey:filePath];
+        }
+
+        //load with object
+        return ((self = [self initWithObject:object]));
+    }
+    else if (isResourceFile)
+    {
+        //store null for non-existent files to improve performance next time
+        [cachedResourceFiles setObject:[NSNull null] forKey:filePath];
+    }
+
+    //failed to load
+    [self release];
+    return ((self = nil));
+}
+
+- (void)writeToFile:(NSString *)path atomically:(BOOL)atomically
+{
+    NSData *data = nil;
+    Class CryptoCoderClass = NSClassFromString(@"CryptoCoder");
+    Class HRCoderClass = NSClassFromString(@"HRCoder");
+    if (CryptoCoderClass && [[self class] respondsToSelector:@selector(CCPassword)])
+    {
+        data = [CryptoCoderClass archivedDataWithRootObject:self];
+    }
+    else if (HRCoderClass && [self useHRCoderIfAvailable])
+    {
+        id plist = objc_msgSend(HRCoderClass, @selector(archivedPlistWithRootObject:), self);
+        NSPropertyListFormat format = NSPropertyListBinaryFormat_v1_0;
+        data = [NSPropertyListSerialization dataWithPropertyList:plist format:format options:0 error:NULL];
+    }
+    else
+    {
+        data = [NSKeyedArchiver archivedDataWithRootObject:self];
+    }
+    [data writeToFile:[[self class] saveFilePath:path] atomically:YES];
+
+	if ([self convertToXML]) [AtoZ plistToXML: path];
+
+
+}
+
+
+/*
++ (instancetype)instanceWithContentsOfFile:(NSString *)filePath
+{
 //	[NSThread stackTrace];
 	return nil;
-}
+}*/
 /*
 	//check if the path is a full path or not
     NSString *path = filePath;
@@ -352,7 +517,7 @@ static BOOL loadingFromResourceFile = NO;
 
     return [[[self alloc] initWithContentsOfFile:path] autorelease];
 }
-*/
+
 
 - (instancetype)initWithContentsOfFile:(NSString *)filePath
 {
@@ -360,7 +525,6 @@ static BOOL loadingFromResourceFile = NO;
 	return nil;
 }
 
-/*
     static NSCache *cachedResourceFiles = nil;
     if (cachedResourceFiles == nil)
     {
