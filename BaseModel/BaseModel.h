@@ -108,6 +108,8 @@ extern NSString *const BaseModelSharedInstanceUpdatedNotification;
 //identifiers and filenames for model objects
 + (NSString *)newUniqueIdentifier;
 
+@property (nonatomic, strong) NSString *uniqueID;
+
 @end
 
 

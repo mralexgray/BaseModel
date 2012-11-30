@@ -528,6 +528,13 @@ static NSMutableDictionary *classValues = nil;
 }
 
 
+- (NSString*) uniqueID
+{
+    return _uniqueID = _uniqueID ?: [[self class] newUniqueIdentifier];
+
+}
+
+
 #pragma mark -
 #pragma mark Unique identifier generation
 
@@ -1038,7 +1045,7 @@ static BOOL loadingFromResourceFile = NO;
 
 
 }
-
+*/
 
 /*
 + (instancetype)instanceWithContentsOfFile:(NSString *)filePath
