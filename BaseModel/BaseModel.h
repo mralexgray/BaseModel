@@ -88,7 +88,8 @@ extern NSString *const BaseModelSharedInstanceUpdatedNotification;
 //loading and saving the model from a plist file
 + (instancetype)instanceWithContentsOfFile:(NSString *)path;
 - (instancetype)initWithContentsOfFile:(NSString *)path;
-- (void)writeToFile:(NSString *)path atomically:(BOOL)atomically;
+- (BOOL)writeToFile:(NSString *)path atomically:(BOOL)atomically;
+//- (void)writeToFile:(NSString *)path atomically:(BOOL)atomically;
 - (BOOL)useHRCoderIfAvailable;
 
 //resourceFile is a file, typically within the resource bundle that
