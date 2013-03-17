@@ -445,7 +445,7 @@
 
 - (int32_t)decodeInt32ForKey:(NSString *)key
 {
-    return [[[_stack lastObject] objectForKey:key] longValue];
+    return [[[_stack lastObject] objectForKey:key] int32Value];
 }
 
 - (int64_t)decodeInt64ForKey:(NSString *)key
