@@ -114,8 +114,7 @@
 #endif
 
 
-#pragma mark -
-#pragma mark Unarchiving
+#pragma mark - Unarchiving
 
 + (id)unarchiveObjectWithPlist:(id)plist
 {
@@ -228,8 +227,7 @@
 }
 
 
-#pragma mark -
-#pragma mark Archiving
+#pragma mark - Archiving
 
 + (id)archivedPlistWithRootObject:(id)rootObject
 {
@@ -296,8 +294,7 @@
 }
 
 
-#pragma mark -
-#pragma mark NSCoding
+#pragma mark - NSCoding
 
 - (BOOL)allowsKeyedCoding
 {
