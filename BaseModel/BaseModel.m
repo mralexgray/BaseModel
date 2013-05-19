@@ -51,6 +51,7 @@ static NSString *const BaseModelLoadingFromResourceFileKey = @"loadingFromResour
 
 @implementation BaseModel
 
+#pragma mark -
 #pragma mark - Private utility methods
 
 + (NSString *)BaseModel_resourceFilePath:(NSString *)path
@@ -65,7 +66,7 @@ static NSString *const BaseModelLoadingFromResourceFileKey = @"loadingFromResour
 
 + (NSString *)BaseModel_resourceFilePath
 {
-	return [self BaseModel_resourceFilePath:[self resourceFile]];
+    return [self BaseModel_resourceFilePath:[self resourceFile]];
 }
 
 + (NSString *)BaseModel_saveFilePath:(NSString *)path
@@ -138,6 +139,7 @@ static NSMutableDictionary *classValues = nil;
 }
 
 
+#pragma mark -
 #pragma mark - Singleton behaviour
 
 + (void)setSharedInstance:(BaseModel *)instance
@@ -230,6 +232,7 @@ static NSMutableDictionary *classValues = nil;
 }
 
 
+#pragma mark -
 #pragma mark - Default constructors
 
 - (void)setUp
@@ -509,7 +512,9 @@ static NSMutableDictionary *classValues = nil;
 	Class CryptoCoderClass = NSClassFromString(@"CryptoCoder");
 	Class HRCoderClass = NSClassFromString(@"HRCoder");
 	if (CryptoCoderClass && [[self class] respondsToSelector:NSSelectorFromString(@"CCPassword")])
+    {
 		data = [CryptoCoderClass archivedDataWithRootObject:self];
+    }
 	else if (HRCoderClass && [self useHRCoderIfAvailable])
 	{
 		id plist = objc_msgSend(HRCoderClass, @selector(archivedPlistWithRootObject:), self);
@@ -524,6 +529,7 @@ static NSMutableDictionary *classValues = nil;
 }
 
 
+#pragma mark -
 #pragma mark - Unique identifier generation
 
 + (NSString *)newUniqueIdentifier
