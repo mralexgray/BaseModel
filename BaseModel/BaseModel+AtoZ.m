@@ -192,7 +192,7 @@ id myCustomFunction(id self, SEL _cmd, [other params...]) {
 	}
 
 	self == sharedI ? nil : ^{			// If this is the shared instance, don't go any further
-		printf("%s\n\n", $(@"setting LAST_MOD_KEY: %@ forclass:%@  withInstance:%@  instance %lu of %@", k, NSStringFromClass(iClass), self, self.class.instanceCt, self.instanceNumber).UTF8String);
+		printf("%s\n\n", [$(@"setting LAST_MOD_KEY: %@ forclass:%@  withInstance:%@  instance %lu of %@", k, NSStringFromClass(iClass), self, self.class.instanceCt, self.instanceNumber) UTF8String]);
 		[iClass  setLastModifiedKey:k instance:self];	// Class method - set last modified
 		[sharedI setValue:self forKey:@"keyChanged"];	// Instance method - dummy setValue to dispatch notifications
 	}();
@@ -263,7 +263,7 @@ id myCustomFunction(id self, SEL _cmd, [other params...]) {
 							policy:OBJC_ASSOCIATION_COPY_NONATOMIC];
 }
 - (KVONewInstanceBlock) newInstanceBlock 								{	return [self associatedValueForKey:@"onInitBlockStorage"] ?: nil; }
-#pragma - BaseModel Related
+#pragma mark - BaseModel Related
 - (BOOL) convertToXML								{
 
 	if ([self respondsToSelector:@selector(convertToXML)]) return self.convertToXML;

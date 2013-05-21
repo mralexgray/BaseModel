@@ -55,11 +55,11 @@ extern NSString *const BaseModelDidAddNewInstance;
 @property (RONLY) 		NSS 	*uniqueID;
 @property (NATOM,ASS) 	BOOL 	 convertToXML;
 
-+ (NSS*) saveFilePath;
+//+ (NSS*) saveFilePath;
 -   (id) objectForKeyedSubscript:					(id)  key;
 -   (id) objectAtIndexedSubscript:					(NSUI)idx;
 - (void) setObject: (id)obj atIndexedSubscript: (NSUI)idx;
 - (void) setObject: (id)obj forKeyedSubscript:  (IDCP)key;
 //+
--   (id) valueForUndefinedKey:						(NSS*)key;
+//-   (id) valueForUndefinedKey:						(NSS*)key;
 @end
