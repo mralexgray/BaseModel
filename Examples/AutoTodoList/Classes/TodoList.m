@@ -16,16 +16,21 @@
 
 - (void)setUp
 {
-    self.items = [NSMutableArray array];
+	NSLog(@"-[%@ %@];",NSStringFromClass(self.class),NSStringFromSelector(_cmd));
+    self.items = NSMutableArray.new;
 }
 
 - (void)setWithArray:(NSArray *)array
 {
+	NSLog(@"Resource file:%@\nSave file:%@", self.class.resourceFile, self.class.saveFile);
+	NSLog(@"-[%@ %@%@];", NSStringFromClass(self.class), NSStringFromSelector(_cmd), array);
 	//initialise with default list from plist
 	[items setArray:[TodoItem instancesWithArray:array]];
 }
 
 //note: we've not implemented the NSCoding methods
 //the AutoCoding library takes care of this for us
+
+- (BOOL) useHRCoderIfAvailable { return YES; }
 
 @end

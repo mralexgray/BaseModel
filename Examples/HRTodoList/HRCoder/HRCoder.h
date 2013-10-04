@@ -64,10 +64,10 @@ static NSString *const HRCoderObjectAliasKey = @"$alias";
 
 + (id)unarchiveObjectWithPlist:(id)plist;
 + (id)unarchiveObjectWithData:(NSData *)data;
-+ (id)unarchiveObjectWithFile:(NSString *)path;
++ (id)unarchiveObjectWithFile:(NSString*)path;
 + (id)archivedPlistWithRootObject:(id)rootObject;
 + (NSData *)archivedDataWithRootObject:(id)rootObject;
-+ (BOOL)archiveRootObject:(id)rootObject toFile:(NSString *)path;
++ (BOOL)archiveRootObject:(id)rootObject toFile:(NSString*)path;
 
 - (id)initForReadingWithData:(NSData *)data;
 - (id)initForWritingWithMutableData:(NSMutableData *)data;

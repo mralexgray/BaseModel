@@ -22,8 +22,7 @@
 
 @synthesize item;
 
-#pragma mark -
-#pragma mark UITextViewDelegate methods
+#pragma mark - UITextViewDelegate methods
 
 - (void)textViewDidChange:(UITextView *)textView
 {	
@@ -43,8 +42,7 @@
 	[item save];
 }
 
-#pragma mark -
-#pragma mark Cleanup
+#pragma mark - Cleanup
 
 
 @end

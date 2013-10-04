@@ -53,7 +53,7 @@
     return sharedInstance;
 }
 
-- (NSString *)description
+- (NSString*)description
 {
     return [NSString stringWithFormat:@"<%@>", NSStringFromClass([self class])];
 }
@@ -69,7 +69,7 @@
 @property (nonatomic, strong) NSString *keyPath;
 @property (nonatomic, strong) NSMutableData *data;
 
-+ (NSString *)classNameKey;
++ (NSString*)classNameKey;
 
 @end
 
@@ -81,7 +81,7 @@
 @synthesize unresolvedAliases = _unresolvedAliases;
 @synthesize keyPath = _keyPath;
 
-+ (NSString *)classNameKey
++ (NSString*)classNameKey
 {
     //used by BaseModel
     return HRCoderClassNameKey;
@@ -114,8 +114,7 @@
 #endif
 
 
-#pragma mark -
-#pragma mark Unarchiving
+#pragma mark - Unarchiving
 
 + (id)unarchiveObjectWithPlist:(id)plist
 {
@@ -143,7 +142,7 @@
     return [self unarchiveObjectWithPlist:plist];
 }
 
-+ (id)unarchiveObjectWithFile:(NSString *)path
++ (id)unarchiveObjectWithFile:(NSString*)path
 {
     //load the file
     return [self unarchiveObjectWithData:[NSData dataWithContentsOfFile:path]];
@@ -228,8 +227,7 @@
 }
 
 
-#pragma mark -
-#pragma mark Archiving
+#pragma mark - Archiving
 
 + (id)archivedPlistWithRootObject:(id)rootObject
 {
@@ -256,7 +254,7 @@
     return data;
 }
 
-+ (BOOL)archiveRootObject:(id)rootObject toFile:(NSString *)path
++ (BOOL)archiveRootObject:(id)rootObject toFile:(NSString*)path
 {
     return [[self archivedDataWithRootObject:rootObject] writeToFile:path atomically:YES];
 }
@@ -296,20 +294,19 @@
 }
 
 
-#pragma mark -
-#pragma mark NSCoding
+#pragma mark - NSCoding
 
 - (BOOL)allowsKeyedCoding
 {
     return YES;
 }
 
-- (BOOL)containsValueForKey:(NSString *)key
+- (BOOL)containsValueForKey:(NSString*)key
 {
     return [_stack lastObject][key] != nil;
 }
 
-- (id)encodedObject:(id)object forKey:(NSString *)key
+- (id)encodedObject:(id)object forKey:(NSString*)key
 {
     if (object && key)
     {
@@ -338,7 +335,7 @@
     return nil;
 }
 
-- (void)encodeObject:(id)objv forKey:(NSString *)key
+- (void)encodeObject:(id)objv forKey:(NSString*)key
 {
     id object = [self encodedObject:objv forKey:key];
     if (object) [_stack lastObject][key] = object;
@@ -353,7 +350,7 @@
     }
 }
 
-- (void)encodeConditionalObject:(id)objv forKey:(NSString *)key
+- (void)encodeConditionalObject:(id)objv forKey:(NSString*)key
 {
     for (id object in _knownObjects)
     {
@@ -365,42 +362,42 @@
     }
 }
 
-- (void)encodeBool:(BOOL)boolv forKey:(NSString *)key
+- (void)encodeBool:(BOOL)boolv forKey:(NSString*)key
 {
     [_stack lastObject][key] = @(boolv);
 }
 
-- (void)encodeInt:(int)intv forKey:(NSString *)key
+- (void)encodeInt:(int)intv forKey:(NSString*)key
 {
     [_stack lastObject][key] = @(intv);
 }
 
-- (void)encodeInt32:(int32_t)intv forKey:(NSString *)key
+- (void)encodeInt32:(int32_t)intv forKey:(NSString*)key
 {
     [_stack lastObject][key] = [NSNumber numberWithLong:intv];
 }
 
-- (void)encodeInt64:(int64_t)intv forKey:(NSString *)key
+- (void)encodeInt64:(int64_t)intv forKey:(NSString*)key
 {
     [_stack lastObject][key] = @(intv);
 }
 
-- (void)encodeFloat:(float)realv forKey:(NSString *)key
+- (void)encodeFloat:(float)realv forKey:(NSString*)key
 {
     [_stack lastObject][key] = @(realv);
 }
 
-- (void)encodeDouble:(double)realv forKey:(NSString *)key
+- (void)encodeDouble:(double)realv forKey:(NSString*)key
 {
     [_stack lastObject][key] = @(realv);
 }
 
-- (void)encodeBytes:(const uint8_t *)bytesp length:(NSUInteger)lenv forKey:(NSString *)key
+- (void)encodeBytes:(const uint8_t *)bytesp length:(NSUInteger)lenv forKey:(NSString*)key
 {
     [_stack lastObject][key] = [NSData dataWithBytes:bytesp length:lenv];
 }
 
-- (id)decodeObject:(id)object forKey:(NSString *)key
+- (id)decodeObject:(id)object forKey:(NSString*)key
 {
     if (object && key)
     {
@@ -435,42 +432,42 @@
     return nil;
 }
 
-- (id)decodeObjectForKey:(NSString *)key
+- (id)decodeObjectForKey:(NSString*)key
 {
     return [self decodeObject:[_stack lastObject][key] forKey:key];
 }
 
-- (BOOL)decodeBoolForKey:(NSString *)key
+- (BOOL)decodeBoolForKey:(NSString*)key
 {
     return [[_stack lastObject][key] boolValue];
 }
 
-- (int)decodeIntForKey:(NSString *)key
+- (int)decodeIntForKey:(NSString*)key
 {
     return [[_stack lastObject][key] intValue];
 }
 
-- (int32_t)decodeInt32ForKey:(NSString *)key
+- (int32_t)decodeInt32ForKey:(NSString*)key
 {
     return (int32_t)[[_stack lastObject][key] longValue];
 }
 
-- (int64_t)decodeInt64ForKey:(NSString *)key
+- (int64_t)decodeInt64ForKey:(NSString*)key
 {
     return [[_stack lastObject][key] longLongValue];
 }
 
-- (float)decodeFloatForKey:(NSString *)key
+- (float)decodeFloatForKey:(NSString*)key
 {
     return [[_stack lastObject][key] floatValue];
 }
 
-- (double)decodeDoubleForKey:(NSString *)key
+- (double)decodeDoubleForKey:(NSString*)key
 {
     return [[_stack lastObject][key] doubleValue];
 }
 
-- (const uint8_t *)decodeBytesForKey:(NSString *)key returnedLength:(NSUInteger *)lengthp
+- (const uint8_t *)decodeBytesForKey:(NSString*)key returnedLength:(NSUInteger *)lengthp
 {
     NSData *data = [_stack lastObject][key];
     *lengthp = [data length];

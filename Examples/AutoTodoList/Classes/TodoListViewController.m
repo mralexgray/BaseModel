@@ -33,11 +33,11 @@
 	[self.navigationController pushViewController:viewController animated:YES];
 }
 
-#pragma mark -
-#pragma mark UITableViewDelegate methods
+#pragma mark - UITableViewDelegate methods
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{	
+{
+	NSLog(@"-[%@ %@];", NSStringFromClass(self.class), NSStringFromSelector(_cmd));
 	TodoItem *item = [[TodoList sharedInstance].items objectAtIndex:indexPath.row];
 	item.checked = !item.checked;
 	[item save];
@@ -52,22 +52,24 @@
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(__unused UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
+	NSLog(@"-[%@ %@];", NSStringFromClass(self.class), NSStringFromSelector(_cmd));
 	[[TodoList sharedInstance].items removeObjectAtIndex:indexPath.row];
 	[[TodoList sharedInstance] save];
 	
 	[tableView reloadData];
 }
 
-#pragma mark -
-#pragma mark UITableViewDataSource methods
+#pragma mark - UITableViewDataSource methods
 
 - (NSInteger)tableView:(__unused UITableView *)table numberOfRowsInSection:(__unused NSInteger)section
-{	
+{
+	NSLog(@"-[%@ %@];", NSStringFromClass(self.class), NSStringFromSelector(_cmd));
 	return [[TodoList sharedInstance].items count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{	
+{
+	NSLog(@"-[%@ %@];", NSStringFromClass(self.class), NSStringFromSelector(_cmd));
 	static NSString *cellType = @"Cell";
 	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellType];
 	if (cell == nil)

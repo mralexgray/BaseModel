@@ -17,7 +17,7 @@
 {
 	_checked 	= NO;
 	_created 	= [NSDate date];
-	_label  	= [NSString stringWithFormat:@"New todo, created:%@", [_created descriptionWithLocale:nil]];
+	_label  		= [NSString stringWithFormat:@"New todo, created:%@", [_created descriptionWithLocale:nil]];
 	_priority  	= @1;
 }
 

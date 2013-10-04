@@ -115,7 +115,7 @@ static void AC_swizzleInstanceMethod(Class c, SEL original, SEL replacement)
     return [self respondsToSelector_AC:selector];
 }
 
-+ (instancetype)objectWithContentsOfFile:(NSString *)filePath
++ (instancetype)objectWithContentsOfFile:(NSString*)filePath
 {
     //load the file
     NSData *data = [NSData dataWithContentsOfFile:filePath];
@@ -154,7 +154,7 @@ static void AC_swizzleInstanceMethod(Class c, SEL original, SEL replacement)
 	return object;
 }
 
-- (BOOL)writeToFile:(NSString *)filePath atomically:(BOOL)useAuxiliaryFile
+- (BOOL)writeToFile:(NSString*)filePath atomically:(BOOL)useAuxiliaryFile
 {
     //note: NSData, NSDictionary and NSArray already implement this method
     //and do not save using NSCoding, however the objectWithContentsOfFile
