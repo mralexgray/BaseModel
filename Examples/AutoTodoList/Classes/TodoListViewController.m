@@ -11,81 +11,62 @@
 #import "TodoItem.h"
 #import "TodoList.h"
 
-
 @implementation TodoListViewController
 
-- (void)viewDidLoad
-{
-	[super viewDidLoad];
-	self.navigationItem.leftBarButtonItem = self.editButtonItem;
-	self.clearsSelectionOnViewWillAppear = YES;
-}
+#pragma mark - UITableViewDataSource methods
 
-- (void)viewWillAppear:(__unused BOOL)animated
-{
-	[super viewWillAppear:YES];
-	[self.tableView reloadData];
-}
+-        (NSInteger) tableView:(UITableView*)tV numberOfRowsInSection:(NSInteger)sect		{
 
-- (IBAction)createNewItem
-{	
-	UIViewController *viewController = [[NewItemViewController alloc] init];
-	[self.navigationController pushViewController:viewController animated:YES];
+	return TRACE_CALL(_cmd, self, @(TodoList.sharedInstance.items.count),nil), TodoList.sharedInstance.items.count;
+
+}
+- (UITableViewCell*) tableView:(UITableView*)tV cellForRowAtIndexPath:(NSIndexPath*)iPath	{ 	static NSString *cellType	= @"Cell";
+
+	TRACE_CALL(_cmd, self, @(iPath.row), nil);
+
+	UITableViewCell *cell 	= [tV dequeueReusableCellWithIdentifier:cellType]
+								  ?: [UITableViewCell.alloc initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellType];
+	
+	TodoItem *item 			= TodoList.sharedInstance.items[iPath.row];
+	cell.textLabel.text 		= item.label;
+	cell.accessoryType 		= item.checked ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+	return cell;
 }
 
 #pragma mark - UITableViewDelegate methods
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-	NSLog(@"-[%@ %@];", NSStringFromClass(self.class), NSStringFromSelector(_cmd));
-	TodoItem *item = [[TodoList sharedInstance].items objectAtIndex:indexPath.row];
-	item.checked = !item.checked;
-	[item save];
-	
-	[tableView reloadData];
-}
+-                        (void) tableView:(UITableView*)tV didSelectRowAtIndexPath:(NSIndexPath*)iPath					{
 
-- (UITableViewCellEditingStyle)tableView:(__unused UITableView *)tableView editingStyleForRowAtIndexPath:(__unused NSIndexPath *)indexPath
-{
+	TRACE_CALL(_cmd, self, iPath, nil);
+
+	TodoItem *item 	= TodoList.sharedInstance.items[iPath.row];
+	item.checked 		= !item.checked;
+
+	[item save];	[tV reloadData];
+}
+- (UITableViewCellEditingStyle) tableView:(UITableView*)tV editingStyleForRowAtIndexPath:(NSIndexPath*)iPath 			{
+
 	return UITableViewCellEditingStyleDelete;
 }
+- 								 (void) tableView:(UITableView*)tV commitEditingStyle:(UITableViewCellEditingStyle)editStyle
+																				forRowAtIndexPath:(NSIndexPath*)iPath							{
 
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(__unused UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-	NSLog(@"-[%@ %@];", NSStringFromClass(self.class), NSStringFromSelector(_cmd));
-	[[TodoList sharedInstance].items removeObjectAtIndex:indexPath.row];
-	[[TodoList sharedInstance] save];
-	
-	[tableView reloadData];
+	TRACE_CALL(_cmd, self, nil);
+
+	[TodoList.sharedInstance.items removeObjectAtIndex:iPath.row];
+	[TodoList.sharedInstance save];
+	[tV reloadData];
 }
 
-#pragma mark - UITableViewDataSource methods
+#pragma mark - Standard view methods
 
-- (NSInteger)tableView:(__unused UITableView *)table numberOfRowsInSection:(__unused NSInteger)section
-{
-	NSLog(@"-[%@ %@];", NSStringFromClass(self.class), NSStringFromSelector(_cmd));
-	return [[TodoList sharedInstance].items count];
-}
+-     (void) viewDidLoad							{	[super viewDidLoad];
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-	NSLog(@"-[%@ %@];", NSStringFromClass(self.class), NSStringFromSelector(_cmd));
-	static NSString *cellType = @"Cell";
-	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellType];
-	if (cell == nil)
-	{
-		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellType];
-	}
-	
-	TodoItem *item = [[TodoList sharedInstance].items objectAtIndex:indexPath.row];
-	cell.textLabel.text = item.label;
-	if (item.checked) {
-		cell.accessoryType = UITableViewCellAccessoryCheckmark;
-	} else {
-		cell.accessoryType = UITableViewCellAccessoryNone;
-	}
-	
-	return cell;
+	self.navigationItem.leftBarButtonItem 	= self.editButtonItem;
+	self.clearsSelectionOnViewWillAppear 	= YES;
 }
+-     (void) viewWillAppear:(BOOL)animated	{	[super viewWillAppear:YES];	[self.tableView reloadData];	}
+- (IBAction) createNewItem							{	[self.navigationController pushViewController:NewItemViewController.new animated:YES];	}
+
 
 @end

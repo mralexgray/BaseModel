@@ -31,7 +31,7 @@
 
 
 #import "BaseModel.h"
-#include <objc/objc-class.h>
+#include <objc/runtime.h>
 
 #import <Availability.h>
 #if !__has_feature(objc_arc)

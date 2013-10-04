@@ -12,25 +12,18 @@
 
 @implementation TodoList
 
-@synthesize items;
+- (void)setUp	{	TRACE_CALL(_cmd, self, nil);	_items = NSMutableArray.new;	}
 
-- (void)setUp
-{
-	NSLog(@"-[%@ %@];",NSStringFromClass(self.class),NSStringFromSelector(_cmd));
-    self.items = NSMutableArray.new;
+- (void)setWithArray:(NSArray*)array	{	TRACE_CALL(_cmd, self, array, nil);
+
+	[self.items setArray:[TodoItem instancesWithArray:array]]; 	//initialise with default list from plist
+
+	printf("Just called +[TodoItem instancesWithArray:\n\t%s];\n"
+			 "Note: initialise with default list from plist (%s)\nResource file:%s\nSave file:%s\n",
+			 [[array valueForKey:@"description"] componentsJoinedByString:@"\n\t"].UTF8String,
+			 NSStringFromSelector(_cmd).UTF8String, self.class.resourceFile.UTF8String, self.class.saveFile.UTF8String);
 }
 
-- (void)setWithArray:(NSArray *)array
-{
-	NSLog(@"Resource file:%@\nSave file:%@", self.class.resourceFile, self.class.saveFile);
-	NSLog(@"-[%@ %@%@];", NSStringFromClass(self.class), NSStringFromSelector(_cmd), array);
-	//initialise with default list from plist
-	[items setArray:[TodoItem instancesWithArray:array]];
-}
-
-//note: we've not implemented the NSCoding methods
-//the AutoCoding library takes care of this for us
-
-- (BOOL) useHRCoderIfAvailable { return YES; }
+//- (BOOL) useHRCoderIfAvailable { return YES; } note: we don't implement NSCoding methods as the AutoCoding library takes care of this by default.
 
 @end
