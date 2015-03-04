@@ -1,10 +1,6 @@
 
-//  TodoList.m
-//  TodoListExample
-
-//  Created by Alex Gray on 11/26/12.
-//	Part of BaseModel by Nick Lockwood.
-
+//  TodoList.m -  TodoListExample
+//  Created by Alex Gray on 11/26/12. -	Part of BaseModel by Nick Lockwood.
 
 #import "Todos.h"
 
@@ -16,7 +12,7 @@
 - (TodoItem *)newTodo
 {
 	TodoItem *newOne = TodoItem.instance;
-	[self insertObject:newOne inItemsAtIndex:self.items.count];  // KVO Array insertion trigger.
+	[self insertObject:newOne inItemsAtIndex:_items.count];  // KVO Array insertion trigger.
 	return newOne;
 }
 
@@ -37,6 +33,7 @@
     return self.items[index];
 }
 
+-         (id)                     objectInItemsAtIndex:(NSUInteger)i {	return self.items[i];	}
 - (void)removeObjectFromItemsAtIndex:(NSUInteger)index
 {
     [self.items removeObjectAtIndex:index];

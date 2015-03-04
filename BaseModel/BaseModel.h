@@ -29,10 +29,34 @@
 //
 //  3. This notice may not be removed or altered from any source distribution.
 //
+//  FXJSON.h Version 1.1
 
+#ifndef FXJSON_OMIT_NULL_ARRAY_VALUES
+#define FXJSON_OMIT_NULL_ARRAY_VALUES NO
+#endif
+#ifndef FXJSON_OMIT_NULL_OBJECT_VALUES
+#define FXJSON_OMIT_NULL_OBJECT_VALUES YES
+#endif
+#ifndef FXJSON_USE_NSJSON_IF_AVAILABLE
+#define FXJSON_USE_NSJSON_IF_AVAILABLE YES
+#endif
 
-#import <Foundation/Foundation.h>
-
+@protocol FXJSONDelegate <NSObject>
+@optional
+- (void)didStartJSONParsing;
+- (void)didStartJSONArray;
+- (void)didStartJSONObject;
+- (void)didFindJSONKey:(NSString *)key;
+- (void)didFindJSONValue:(id)value;
+- (void)didEndJSONObject;
+- (void)didEndJSONArray;
+- (void)didEndJSONParsing;
+@end
+@interface FXJSON : NSObject
++ (void)enumerateJSONData:(NSData *)data withDelegate:(id<FXJSONDelegate>)delegate;
++ (id)objectWithJSONEncodedString:(NSString *)string;
++ (id)objectWithJSONData:(NSData *)data;
+@end
 
 extern NSString *const BaseModelSharedInstanceUpdatedNotification;
 extern NSString *const BaseModelException;
@@ -116,5 +140,7 @@ typedef NS_ENUM(NSUInteger, BMFileFormat)
 //useful for creating universally unique
 //identifiers and filenames for model objects
 + (NSString *)newUniqueIdentifier;
+
+@property (nonatomic, strong) NSString *uniqueID;
 
 @end

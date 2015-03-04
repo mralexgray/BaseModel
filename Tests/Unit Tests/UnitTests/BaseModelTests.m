@@ -1,39 +1,37 @@
 //
-//  BaseModelTests.m
+//  Test.m
+//  URLUtilsTests
 //
 //  Created by Nick Lockwood on 12/01/2012.
 //  Copyright (c) 2012 Charcoal Design. All rights reserved.
 //
 
+//
+//  Tests.m
+//
+//  Created by Nick Lockwood on 12/01/2012.
+//  Copyright (c) 2012 Charcoal Design. All rights reserved.
+//
 
-#import <XCTest/XCTest.h>
+#import "Tests.h"
 #import "BaseModel.h"
 
 
 @interface TestModel : BaseModel
 
 @property (nonatomic, strong) NSString *string;
-@property (nonatomic, strong) NSDate *date;
 
 @end
 
 
 @implementation TestModel
 
-+ (BMFileFormat)saveFormat
-{
-    return BMFileFormatJSON;
-}
+@synthesize string;
 
 @end
 
 
-@interface BaseModelTests : XCTestCase
-
-@end
-
-
-@implementation BaseModelTests
+@implementation Tests
 
 - (void)testSetSharedInstanceToNil
 {
@@ -44,15 +42,7 @@
     [TestModel setSharedInstance:nil];
     
     //verify that it worked
-    XCTAssertFalse([TestModel hasSharedInstance]);
-    XCTAssertNil([TestModel sharedInstance].string);
-}
-
-- (void)testSaveDateAsJSON
-{
-    [TestModel sharedInstance].date = [NSDate date];
-    XCTAssertNoThrow([[TestModel sharedInstance] save]);
+    NSAssert([TestModel sharedInstance].string == nil, @"Failed to clear shared instance");
 }
 
 @end
-

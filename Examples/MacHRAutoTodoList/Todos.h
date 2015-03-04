@@ -1,22 +1,19 @@
 
-//  TodoItem.h
-//  TodoList
-
-//  Created by Alex Gray on 11/26/12.
-//	Part of BaseModel by Nick Lockwood.
+//  TodoItem.h - TodoList
+//  Created by Alex Gray on 11/26/12. -	Part of BaseModel by Nick Lockwood.
 
 #import "BaseModel.h"
 
 
-@interface TodoItem : BaseModel
-
-@property (readonly) 		  NSColor  	*color;
-@property (nonatomic, strong) NSString  *label;
-@property (nonatomic, strong) NSNumber  *priority;
-@property (nonatomic) 		  BOOL       checked;
-
+@interface          TodoItem : BaseModel
+@property (readonly) NSColor * color;
+@property           NSString * label;
+@property           NSNumber * priority;
+@property               BOOL   checked;
 @end
 
+@interface          TodoList : BaseModel
+@property     NSMutableArray * items;
 
 @interface TodoList : BaseModel
 
